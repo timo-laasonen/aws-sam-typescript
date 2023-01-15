@@ -18,6 +18,7 @@ package.lock.json
 /node_modules
 .aws-sam
 .idea
+.vscode
 
 # TypeScript cache
 *.tsbuildinfo
