@@ -8,15 +8,84 @@ Globals:
     Timeout: 30
 
 Resources:
-  ApiLambda:
+
+  fetchAll:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.handler
-      FunctionName: "API-Lambda"
+      Handler: app.fetchAll
       CodeUri: src/lambda-handlers/
+      FunctionName: "fetchAll"
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP get method to get all items.
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the Users
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Users
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          TABLE_NAME: !Ref Users
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /api
+            Method: GET
+
+  findById:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.findById
+      CodeUri: src/lambda-handlers/
+      FunctionName: "findById"
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP get method to get one item by id.
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the Users
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Users
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          TABLE_NAME: !Ref Users
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            Path: /api/{id}
+            Method: GET
+
+  createNew:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.addNew
+      CodeUri: src/lambda-handlers/
+      FunctionName: "addNew"
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP POST method to add one new item.
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the Users
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Users
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          TABLE_NAME: !Ref Users
       Events:
         ApiEvent:
           Type: Api
           Properties:
             Path: /api
-            Method: get
+            Method: POST
