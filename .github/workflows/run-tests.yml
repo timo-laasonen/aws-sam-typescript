@@ -1,0 +1,25 @@
+name: CI run tests step
+description: Runs tests and uploads reports
+
+runs:
+  using: composite
+  steps:
+    - name: Node setup
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+
+    - name: NPM install
+      run: npm install
+
+    - name: Run linter
+      run: npm run lint
+
+    - name: Run tests
+      run: npm run coverage
+
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v2
+      with:
+        name: Coverage report
+        path: coverage/lcov-report/

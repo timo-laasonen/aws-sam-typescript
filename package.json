@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "build": "webpack-cli",
-    "watch": "webpack-cli -w"
+    "watch": "webpack-cli -w",
+    "lint": "npx eslint 'src/**'",
+    "coverage": "npm test -- --coverage --watchAll=false"
   },
   "keywords": [],
   "author": "",
