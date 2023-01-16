@@ -10,12 +10,15 @@ runs:
         node-version: '16.x'
 
     - name: NPM install
+      shell: bash
       run: npm install
 
     - name: Run linter
+      shell: bash
       run: npm run lint
 
     - name: Run tests
+      shell: bash
       run: npm run coverage
 
     - name: Upload coverage report
