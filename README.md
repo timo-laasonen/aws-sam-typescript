@@ -18,3 +18,7 @@ We will now start a local HTTP server to test our AWS Lambda function:
 The console should show that the function gets mounted in a Docker container before it runs
 
 We can now go to browser and test endpoint which finds all items with [localhost:3000/api](localhost:3000/api)
+
+# Generate GitHub Actions CI/CD pipeline
+
+Run `sam pipeline init --bootstrap` and follow instructions to create GitHub Actions pipeline configuration
