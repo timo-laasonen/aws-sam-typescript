@@ -22,3 +22,4 @@ We can now go to browser and test endpoint which finds all items with [localhost
 # Generate GitHub Actions CI/CD pipeline
 
 Run `sam pipeline init --bootstrap` and follow instructions to create GitHub Actions pipeline configuration
+For CI/CD pipeline you have to have AWS credentials in GitHub. Look `pipeline.yaml` file which ones are needed
