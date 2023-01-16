@@ -2,11 +2,14 @@ name: GitHub Actions CI
 run-name: ${{ github.actor }} is testing out GitHub Actions
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
     branches:
       - '**'
-    types: [ opened, synchronize ]
+    types:
+      - opened
+      - synchronize
 
 jobs:
   test:
