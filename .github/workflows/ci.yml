@@ -16,5 +16,6 @@ jobs:
     runs-on: ubuntu-latest # could be some specific release
     steps:
       - uses: actions/checkout@v3
+
       - name: Run tests
-      - uses: ./.github/workflows/run-tests
+        uses: ./.github/workflows/run-tests
