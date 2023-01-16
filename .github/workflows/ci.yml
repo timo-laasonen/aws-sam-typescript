@@ -1,5 +1,5 @@
 name: GitHub Actions CI
-run-name: ${{ github.actor }} is testing out GitHub Actions
+run-name: CI triggered by ${{ github.event_name }} event to ${{ github.ref }} by ${{ github.actor }}
 on:
   push:
     branches:
