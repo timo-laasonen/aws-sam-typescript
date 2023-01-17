@@ -14,7 +14,7 @@ const client: DynamoDBClient = new DynamoDBClient({});
 const ddbDocClient: DynamoDBDocumentClient =
     DynamoDBDocumentClient.from(client);
 
-interface IUser {
+export interface IUser {
     id: string;
     name: string;
     created: Date;
