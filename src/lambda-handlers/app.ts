@@ -1,29 +1,42 @@
 import { APIGatewayEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import {
+    DynamoDBDocumentClient,
+    GetCommand,
+    GetCommandOutput,
+    PutCommand,
+    PutCommandOutput,
+    ScanCommand,
+    ScanCommandOutput
+} from '@aws-sdk/lib-dynamodb';
+
+const client: DynamoDBClient = new DynamoDBClient({});
+const ddbDocClient: DynamoDBDocumentClient =
+    DynamoDBDocumentClient.from(client);
 
 interface IUser {
     id: string;
     name: string;
+    created: Date;
 }
 
-const data: IUser[] = [
-    {
-        id: 'fa5ebb40-d440-430a-93b3-b0a07e5bd63a',
-        name: 'User 1'
-    },
-    {
-        id: '06964cfb-1212-4fd7-a80e-d825300f9226',
-        name: 'User 2'
-    }
-];
+// Get the DynamoDB table name from environment variables
+const tableName = process.env.TABLE_NAME;
 
 export const fetchAll = async (
     event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
     console.log(`Event: ${JSON.stringify(event, null, 2)}`);
 
+    const allUsers: ScanCommandOutput = await ddbDocClient.send(
+        new ScanCommand({
+            TableName: tableName
+        })
+    );
+
     return {
         statusCode: 200,
-        body: JSON.stringify(data)
+        body: JSON.stringify(allUsers.Items)
     };
 };
 
@@ -35,7 +48,14 @@ export const findById = async (
     console.log(`Context: ${JSON.stringify(context, null, 2)}`);
 
     const id = event.pathParameters?.id;
-    const user: IUser | undefined = data.find((user) => user.id === id);
+    const user: GetCommandOutput = await ddbDocClient.send(
+        new GetCommand({
+            TableName: tableName,
+            Key: {
+                id
+            }
+        })
+    );
 
     return {
         statusCode: 200,
@@ -55,10 +75,15 @@ export const addNew = async (
     }
 
     const user: IUser = JSON.parse(event.body);
-    data.push(user);
+    const response: PutCommandOutput = await ddbDocClient.send(
+        new PutCommand({
+            TableName: tableName,
+            Item: user
+        })
+    );
 
     return {
         statusCode: 200,
-        body: JSON.stringify(user)
+        body: JSON.stringify(response)
     };
 };

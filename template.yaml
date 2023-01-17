@@ -15,11 +15,7 @@ Resources:
       Handler: app.fetchAll
       CodeUri: src/lambda-handlers/
       FunctionName: "fetchAll"
-      Runtime: nodejs18.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
+      Runtime: nodejs16.x
       Description: A simple example includes a HTTP get method to get all items.
       Policies:
         # Give Create/Read/Update/Delete Permissions to the Users
@@ -42,11 +38,7 @@ Resources:
       Handler: app.findById
       CodeUri: src/lambda-handlers/
       FunctionName: "findById"
-      Runtime: nodejs18.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
+      Runtime: nodejs16.x
       Description: A simple example includes a HTTP get method to get one item by id.
       Policies:
         # Give Create/Read/Update/Delete Permissions to the Users
@@ -69,11 +61,7 @@ Resources:
       Handler: app.addNew
       CodeUri: src/lambda-handlers/
       FunctionName: "addNew"
-      Runtime: nodejs18.x
-      Architectures:
-        - x86_64
-      MemorySize: 128
-      Timeout: 100
+      Runtime: nodejs16.x
       Description: A simple example includes a HTTP POST method to add one new item.
       Policies:
         # Give Create/Read/Update/Delete Permissions to the Users
@@ -89,3 +77,14 @@ Resources:
           Properties:
             Path: /api
             Method: POST
+
+  # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
+  Users:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2

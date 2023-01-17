@@ -22,7 +22,7 @@ runs:
       run: npm run coverage
 
     - name: Upload coverage report
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Coverage report
         path: coverage/lcov-report/
