@@ -1,19 +1,9 @@
 import { APIGatewayEvent, APIGatewayProxyResult, Context } from 'aws-lambda';
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import {
-    DynamoDBDocumentClient,
-    GetCommand,
-    GetCommandOutput,
-    PutCommand,
-    PutCommandOutput,
-    ScanCommand,
-    ScanCommandOutput
-} from '@aws-sdk/lib-dynamodb';
 
-const client: DynamoDBClient = new DynamoDBClient({});
-const ddbDocClient: DynamoDBDocumentClient =
+//const client: DynamoDBClient = new DynamoDBClient({ region: 'us-east-1' });
+/*const ddbDocClient: DynamoDBDocumentClient =
     DynamoDBDocumentClient.from(client);
-
+*/
 export interface IUser {
     id: string;
     name: string;
@@ -27,16 +17,17 @@ export const fetchAll = async (
     event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
     console.log(`Event: ${JSON.stringify(event, null, 2)}`);
+    console.log(`TableName: ${tableName}`);
 
-    const allUsers: ScanCommandOutput = await ddbDocClient.send(
+    /*const allUsers: ScanCommandOutput = await ddbDocClient.send(
         new ScanCommand({
             TableName: tableName
         })
-    );
+    );*/
 
     return {
         statusCode: 200,
-        body: JSON.stringify(allUsers.Items)
+        body: JSON.stringify([] /*allUsers.Items*/)
     };
 };
 
@@ -48,18 +39,18 @@ export const findById = async (
     console.log(`Context: ${JSON.stringify(context, null, 2)}`);
 
     const id = event.pathParameters?.id;
-    const user: GetCommandOutput = await ddbDocClient.send(
+    /*const user: GetCommandOutput = await ddbDocClient.send(
         new GetCommand({
             TableName: tableName,
             Key: {
                 id
             }
         })
-    );
+    );*/
 
     return {
         statusCode: 200,
-        body: JSON.stringify(user)
+        body: JSON.stringify(id)
     };
 };
 
@@ -75,15 +66,15 @@ export const addNew = async (
     }
 
     const user: IUser = JSON.parse(event.body);
-    const response: PutCommandOutput = await ddbDocClient.send(
+    /*const response: PutCommandOutput = await ddbDocClient.send(
         new PutCommand({
             TableName: tableName,
             Item: user
         })
-    );
+    );*/
 
     return {
         statusCode: 200,
-        body: JSON.stringify(response)
+        body: JSON.stringify(user)
     };
 };

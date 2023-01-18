@@ -13,7 +13,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.fetchAll
-      CodeUri: src/lambda-handlers/
+      CodeUri: ./src/lambda-handlers/
       FunctionName: "fetchAll"
       Runtime: nodejs16.x
       Description: A simple example includes a HTTP get method to get all items.
@@ -36,7 +36,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.findById
-      CodeUri: src/lambda-handlers/
+      CodeUri: ./src/lambda-handlers/
       FunctionName: "findById"
       Runtime: nodejs16.x
       Description: A simple example includes a HTTP get method to get one item by id.
@@ -59,7 +59,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.addNew
-      CodeUri: src/lambda-handlers/
+      CodeUri: ./src/lambda-handlers/
       FunctionName: "addNew"
       Runtime: nodejs16.x
       Description: A simple example includes a HTTP POST method to add one new item.
