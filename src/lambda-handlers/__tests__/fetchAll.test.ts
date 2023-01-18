@@ -1,7 +1,8 @@
-import {fetchAll, IUser} from '../app';
-import {APIGatewayProxyEvent, APIGatewayProxyResult} from 'aws-lambda';
+import {APIGatewayProxyResult} from 'aws-lambda';
 import {mockClient} from 'aws-sdk-client-mock';
 import {DynamoDBDocumentClient, ScanCommand} from '@aws-sdk/lib-dynamodb';
+import {IUser} from "../../interfaces/interfaces";
+import {fetchAll} from "../fetchAllUsers";
 
 const event: any = {
     body: JSON.stringify({}),

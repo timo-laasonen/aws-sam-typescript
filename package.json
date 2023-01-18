@@ -1,18 +1,13 @@
 {
   "name": "aws-sam-typescript",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
-    "build": "webpack-cli",
-    "watch": "webpack-cli -w",
+    "build": "tsc",
+    "watch": "tsc -w --preserveWatchOutput",
     "lint": "npx eslint 'src/**'",
     "coverage": "npm test -- --coverage --watchAll=false"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.109",
     "@types/jest": "^29.2.5",

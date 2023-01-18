@@ -4,6 +4,12 @@ Description: AWS SAM Boilerplate Using TypeScript
 
 Globals:
   Function:
+    Layers:
+      - !Ref RuntimeDependenciesLayer
+    Environment:
+      Variables:
+        # Make table name accessible as environment variable from function code during execution
+        TABLE_NAME: !Ref Users
     Runtime: nodejs16.x # modify the version according to your need
     Timeout: 30
 
@@ -12,8 +18,7 @@ Resources:
   fetchAll:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.fetchAll
-      CodeUri: ./src/lambda-handlers/
+      Handler: dist/lambda-handlers/fetchAllUsers.fetchAll
       FunctionName: "fetchAll"
       Runtime: nodejs16.x
       Description: A simple example includes a HTTP get method to get all items.
@@ -21,22 +26,19 @@ Resources:
         # Give Create/Read/Update/Delete Permissions to the Users
         - DynamoDBCrudPolicy:
             TableName: !Ref Users
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          TABLE_NAME: !Ref Users
       Events:
         Api:
           Type: Api
           Properties:
             Path: /api
             Method: GET
+    Metadata:
+      BuildMethod: makefile
 
   findById:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.findById
-      CodeUri: ./src/lambda-handlers/
+      Handler: dist/lambda-handlers/fetchOneUser.findById
       FunctionName: "findById"
       Runtime: nodejs16.x
       Description: A simple example includes a HTTP get method to get one item by id.
@@ -44,22 +46,19 @@ Resources:
         # Give Create/Read/Update/Delete Permissions to the Users
         - DynamoDBCrudPolicy:
             TableName: !Ref Users
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          TABLE_NAME: !Ref Users
       Events:
         ApiEvent:
           Type: Api
           Properties:
             Path: /api/{id}
             Method: GET
+    Metadata:
+      BuildMethod: makefile
 
   createNew:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.addNew
-      CodeUri: ./src/lambda-handlers/
+      Handler: dist/lambda-handlers/addUser.addNew
       FunctionName: "addNew"
       Runtime: nodejs16.x
       Description: A simple example includes a HTTP POST method to add one new item.
@@ -67,16 +66,14 @@ Resources:
         # Give Create/Read/Update/Delete Permissions to the Users
         - DynamoDBCrudPolicy:
             TableName: !Ref Users
-      Environment:
-        Variables:
-          # Make table name accessible as environment variable from function code during execution
-          TABLE_NAME: !Ref Users
       Events:
         ApiEvent:
           Type: Api
           Properties:
             Path: /api
             Method: POST
+    Metadata:
+      BuildMethod: makefile
 
   # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
   Users:
@@ -88,3 +85,14 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 2
         WriteCapacityUnits: 2
+
+  RuntimeDependenciesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Metadata:
+      BuildMethod: makefile
+    Properties:
+      Description: Runtime dependencies for Lambdas
+      ContentUri: ./
+      CompatibleRuntimes:
+        - nodejs16.x
+      RetentionPolicy: Retain

@@ -29,3 +29,4 @@ package.lock.json
 # Optional ESLint cache
 .eslintcache
 /aws-sam-typescript.iml
+/dist/
